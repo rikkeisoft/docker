@@ -10,7 +10,7 @@ RUN yum -y install http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-
   yum-utils wget unzip && \
   yum-config-manager --enable remi,remi-php56,remi-php56-debuginfo
 
-RUN yum -y install update
+RUN yum -y update
 
 RUN yum -y install make gcc git httpd php \
   php-common php-cli php-pdo php-mysql php-gd \
