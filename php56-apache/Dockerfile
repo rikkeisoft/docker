@@ -14,17 +14,23 @@ RUN yum -y update
 
 RUN yum -y install make gcc git httpd php \
   php-common php-cli php-pdo php-mysql php-gd \
-  php-mbstring php-mcrypt php-xml php-devel
+  php-mbstring php-mcrypt php-xml php-devel php-pear
 
 RUN rm -rf /var/cache/yum/* && yum clean all
 
 RUN echo "<?php phpinfo(); " >> /var/www/html/index.php
 
 ADD docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x docker-entrypoint.sh -v
+RUN chmod +x /docker-entrypoint.sh -v
+
+COPY php-ext-enable /usr/local/bin/
+RUN chmod +x /usr/local/bin/php-ext-enable -v
+
+RUN pecl install redis && \
+  php-ext-enable redis
 
 WORKDIR /var/www/html
 
 EXPOSE 80 443
 
-CMD ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]

@@ -1,4 +1,10 @@
 #!/bin/bash
-# Remove http.pid & tmp
-rm -rf /run/httpd/* /tmp/httpd*
-exec /usr/sbin/apachectl -D FOREGROUND
+set -e
+
+if [ "$1" = '' ]; then
+  rm -rf /run/httpd/* /tmp/httpd*
+  set -- /usr/sbin/apachectl -D FOREGROUND
+fi
+
+echo "$@"
+exec "$@"
